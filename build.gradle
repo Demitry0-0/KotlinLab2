@@ -57,4 +57,5 @@ dependencies {
 dependencies {
     implementation group: "org.ktorm", name: "ktorm-core", version: ktormVersion
     implementation group: "org.ktorm", name: "ktorm-support-sqlite", version: ktormVersion
+    implementation group: "org.flywaydb", name: "flyway-core", version: flywayVersion
 }
