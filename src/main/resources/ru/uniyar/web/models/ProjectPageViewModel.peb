@@ -1,0 +1,37 @@
+{% extends "./layout.peb" %}
+{% block content %}
+
+<main class="container">
+    <div class="row g-5">
+        <div class="col-md-8">
+            <p>Проект: {{ model.project.title }}.</p>
+            <p>Добавлен: {{ model.project.createdAt | date("yyyy-MM-dd HH:mm") }}.</p>
+            <p>Предприниматель: {{ model.project.user.firstName}} {{ model.project.user.lastName}} .</p>
+            <p>Описание: {{ model.project.description }}.</p>
+            <p>Дата начала сбора средств: {{ model.project.startDate | date("yyyy-MM-dd") }}.</p>
+            <p>Срок окончания сбора средств: {{ model.project.endDate | date("yyyy-MM-dd") }}.</p>
+            <p>Целевой размер фонда: {{ model.project.targetFundSize }} рублей.</p>
+            <p>Осталось собрать: {{ model.leftSum }} рублей.</p>
+        </div>
+        <p>Спонсоры:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Спонсор</th>
+                <th>Сумма</th>
+            </tr>
+            </thead>
+            <tbody>
+            {%for sponsor in model.project.sponsors%}
+            <tr>
+                <td>{{ sponsor.first.firstName}} {{ sponsor.first.lastName}}</td>
+                <td>{{ sponsor.second}}</td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        <p>Общая сумма: {{model.totalSum}}</p>
+    </div>
+</main>
+
+{% endblock %}
