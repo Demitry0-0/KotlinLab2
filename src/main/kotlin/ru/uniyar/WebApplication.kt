@@ -15,10 +15,12 @@ import ru.uniyar.domain.models.Project
 import ru.uniyar.domain.models.User
 import ru.uniyar.domain.storage.Projects
 import ru.uniyar.domain.storage.Users
+import ru.uniyar.web.handlers.GetProjectRegistration
 import ru.uniyar.web.handlers.HomeHandler
 import ru.uniyar.web.handlers.ProjectByIdHandler
 import ru.uniyar.web.handlers.ProjectsHandler
 import ru.uniyar.web.handlers.GetUserRegistration
+import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostUserRegistration
 import java.time.LocalDateTime
 
@@ -71,6 +73,8 @@ fun getRoutes(
         "/projects/{id}" bind Method.GET to ProjectByIdHandler(renderer, projects),
         "/registration/user" bind Method.GET to GetUserRegistration(),
         "/registration/user" bind Method.POST to PostUserRegistration(),
+        "/registration/project" bind Method.GET to GetProjectRegistration(),
+        "/registration/project" bind Method.POST to PostProjectRegistration(),
         static(ResourceLoader.Classpath("/ru/uniyar/public/")),
     )
 

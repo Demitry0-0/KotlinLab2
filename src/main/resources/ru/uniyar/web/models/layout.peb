@@ -46,18 +46,37 @@
         </div>
     </div>
 </nav>
-{% macro inputForm(type="text", name, form) %}
+{% macro inputForm(type="text", name, form, placeholder="", min="") %}
 <input
         class="form-control"
         type="{{ type }}"
         name="{{ name }}"
+        placeholder="{{ placeholder }}"
         value="{{ form[name]  }}"
-required>
+        min="{{ min }}"
+        required>
+{% endmacro %}
+
+{% macro inputListUsersForm(type="text", name, form, users, placeholder="") %}
+<input
+        class="form-control"
+        type="{{ type }}"
+        name="{{ name }}"
+        placeholder="{{ placeholder }}"
+        value="{{ form[name]  }}"
+        list="dish"
+        required>
+<datalist id="dish">
+        {%for user in users%}
+            <option value="{{ user.id }} {{ user.firstName }} {{ user.lastName}}"
+                    label="{{ user.firstName }} {{ user.lastName}}">
+        {%endfor%}
+</datalist>
 {% endmacro %}
 <main class="container">
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
 </main>
 
 </body>
