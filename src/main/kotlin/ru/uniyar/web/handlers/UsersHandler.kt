@@ -11,6 +11,7 @@ import org.http4k.lens.Validator
 import org.http4k.lens.nonEmptyString
 import org.http4k.lens.webForm
 import org.http4k.template.TemplateRenderer
+import ru.uniyar.Config
 import ru.uniyar.Containers
 import ru.uniyar.domain.models.User
 import ru.uniyar.web.models.UserRegistrationViewModel
@@ -38,7 +39,7 @@ class PostUserRegistration(
             val lastName = lastNameFiled(form)
             if (firstName.isName() && lastName.isName()) {
                 //save
-                return Response(Status.OK).redirect("/")
+                return Response(Status.OK).redirect(Config.mainPath)
             }
         }
         val path = request.uri.toString()
