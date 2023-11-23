@@ -18,6 +18,8 @@ import ru.uniyar.domain.storage.Users
 import ru.uniyar.web.handlers.HomeHandler
 import ru.uniyar.web.handlers.ProjectByIdHandler
 import ru.uniyar.web.handlers.ProjectsHandler
+import ru.uniyar.web.handlers.GetUserRegistration
+import ru.uniyar.web.handlers.PostUserRegistration
 import java.time.LocalDateTime
 
 fun generateProjects(users: List<User>): List<Project> {
@@ -30,7 +32,7 @@ fun generateProjects(users: List<User>): List<Project> {
                 "На анекдоты",
                 "Хочу завести большую базу анекдотов",
                 1000000,
-                List((0..users.size).random()) {
+                List((1..users.size).random()) {
                     Pair(users.random(), (1000L..1000000L).random())
                 },
                 LocalDateTime.of(2010, 10, 1, 0, 0, 0),
@@ -47,7 +49,7 @@ fun generateProjects(users: List<User>): List<Project> {
                 "На кухню",
                 "Хочу улучшить условия труда",
                 9999999,
-                List((0..users.size).random()) {
+                List((1..users.size).random()) {
                     Pair(users.random(), (1000L..1000000L).random())
                 },
                 LocalDateTime.of(2015, 10, 1, 0, 0, 0),
@@ -67,6 +69,8 @@ fun getRoutes(
         "/" bind Method.GET to HomeHandler(renderer),
         "/projects" bind Method.GET to ProjectsHandler(renderer, projects),
         "/projects/{id}" bind Method.GET to ProjectByIdHandler(renderer, projects),
+        "/registration/user" bind Method.GET to GetUserRegistration(),
+        "/registration/user" bind Method.POST to PostUserRegistration(),
         static(ResourceLoader.Classpath("/ru/uniyar/public/")),
     )
 
@@ -84,7 +88,7 @@ fun main() {
     users.fill(generatedUsers)
     projects.fill(generateProjects(generatedUsers))
 
-    val renderer = PebbleTemplates().HotReload("src/main/resources")
+    val renderer = PebbleTemplates().HotReload("./src/main/resources")
     val app: HttpHandler = getRoutes(renderer, projects)
 
     val server = app.asServer(Netty(port = 9000))

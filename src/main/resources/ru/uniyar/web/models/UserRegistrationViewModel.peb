@@ -1,0 +1,29 @@
+{% extends "./layout.peb" %}
+
+{% block content %}
+<form method="POST">
+
+  <div class="mb-3">
+    <label for="text" class="form-label">Имя</label>
+    {{
+        inputForm(
+            name="firstName",
+            type="text",
+            form=model.user
+        )
+    }}
+  </div>
+  <div class="mb-3">
+    <label for="text" class="form-label">Фамилия</label>
+    {{
+        inputForm(
+            name="lastName",
+            type="text",
+            form=model.user
+        )
+    }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+{% endblock %}

@@ -46,7 +46,14 @@
         </div>
     </div>
 </nav>
-
+{% macro inputForm(type="text", name, form) %}
+<input
+        class="form-control"
+        type="{{ type }}"
+        name="{{ name }}"
+        value="{{ form[name]  }}"
+required>
+{% endmacro %}
 <main class="container">
 {% block content %}
 
