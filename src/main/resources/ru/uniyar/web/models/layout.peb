@@ -47,11 +47,11 @@
     </div>
 </nav>
 
-<div>
-    {% block content %}
+<main class="container">
+{% block content %}
 
-    {% endblock %}
-</div>
+{% endblock %}
+</main>
 
 </body>
 </html>
