@@ -38,7 +38,7 @@ class PostUserRegistration(
         )
         service.createUser(result.value)
 
-        return Response(Status.FOUND).redirect(Config.mainPath)
+        return Response(Status.FOUND).redirect(Config.MAIN_PATH)
     }
 
 }

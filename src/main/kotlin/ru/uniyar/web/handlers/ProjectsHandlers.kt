@@ -1,18 +1,10 @@
 package ru.uniyar.web.handlers
 
-import org.http4k.core.Body
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.core.body.formAsMap
-import org.http4k.lens.FormField
-import org.http4k.lens.Validator
-import org.http4k.lens.localDate
-import org.http4k.lens.long
-import org.http4k.lens.nonEmptyString
-import org.http4k.lens.string
-import org.http4k.lens.webForm
 import org.http4k.routing.path
 import org.http4k.template.TemplateRenderer
 import ru.uniyar.Config
@@ -20,13 +12,10 @@ import ru.uniyar.Containers
 import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.storage.Projects
-import ru.uniyar.users
 import ru.uniyar.web.models.ProjectPageViewModel
 import ru.uniyar.web.models.ProjectRegistrationViewModel
 import ru.uniyar.web.models.ProjectsPageViewModel
-import ru.uniyar.web.models.UserRegistrationViewModel
 import ru.uniyar.web.validation.ProjectValidation
-import ru.uniyar.web.validation.UserValidation
 import kotlin.math.max
 
 class ProjectsHandler(
@@ -92,7 +81,7 @@ class PostProjectRegistration(
         )
         service.createProject(result.value)
 
-        return Response(Status.FOUND).redirect(Config.mainPath)
+        return Response(Status.FOUND).redirect(Config.MAIN_PATH)
     }
 
 }
