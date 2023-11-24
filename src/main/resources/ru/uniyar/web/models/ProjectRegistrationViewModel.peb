@@ -30,6 +30,17 @@
 
 
 
+  <div class="mb-3">
+      <label for="number" class="form-label">Целевая сумма</label>
+      {{
+          inputForm(
+              name="targetFundSize",
+              type="number",
+              form=model.project,
+              min="0"
+          )
+      }}
+    </div>
 
 <div class="mb-3">
       <label for="date" class="form-label">Начало сбора</label>
