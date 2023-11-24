@@ -48,16 +48,12 @@ class ProjectByIdHandler(
 }
 
 
-val lst = listOf(
-    UserModel(1, "A", "B"),
-    UserModel(2, "A", "B"),
-)
-
 class GetProjectRegistration(
-    val renderer: TemplateRenderer = Containers.renderer
+    val renderer: TemplateRenderer = Containers.renderer,
+    val userService: UserService = Containers.userService
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
-        return Response(Status.OK).body(renderer(ProjectRegistrationViewModel(users = lst)))
+        return Response(Status.OK).body(renderer(ProjectRegistrationViewModel(users = userService.getAllUsers())))
     }
 
 }
