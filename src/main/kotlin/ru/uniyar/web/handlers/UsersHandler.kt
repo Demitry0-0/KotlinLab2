@@ -32,7 +32,8 @@ class PostUserRegistration(
         result.value ?: return Response(Status.BAD_REQUEST).body(
             renderer(
                 UserRegistrationViewModel(
-                    request.formAsMap().mapValues { it.value.first() })
+                    request.formAsMap().mapValues { it.value.first() },
+                    messages = result.errors)
             )
         )
         service.createUser(result.value)

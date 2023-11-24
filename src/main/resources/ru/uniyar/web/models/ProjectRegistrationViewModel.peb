@@ -2,7 +2,6 @@
 
 {% block content %}
 <form method="POST">
-
   <div class="mb-3">
     <label for="text" class="form-label">Название</label>
     {{
@@ -70,4 +69,5 @@
   </div>
   <button type="submit" class="btn btn-primary">Отправить</button>
 </form>
+<p>{{ model.messages | first }}</p>
 {% endblock %}

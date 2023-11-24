@@ -86,7 +86,8 @@ class PostProjectRegistration(
             renderer(
                 ProjectRegistrationViewModel(
                     users = lst,
-                    project = request.formAsMap().mapValues { it.value.first() }),
+                    project = request.formAsMap().mapValues { it.value.first() },
+                    messages = result.errors),
             )
         )
         service.createProject(result.value)

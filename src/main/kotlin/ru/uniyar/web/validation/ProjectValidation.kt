@@ -34,7 +34,7 @@ class ProjectValidation {
 
         val user = userField(form)
         val userId = user.split("\\s+".toRegex()).first().toIntOrNull()
-        userId ?: return ResultValidate(null, listOf("user not found"))
+        userId ?: return ResultValidate(null, listOf("user id not found"))
 
         val targetFundSize = targetFundSizeFiled(form)
         if (targetFundSize < 0) return ResultValidate(null, listOf("target fund size is negative"))

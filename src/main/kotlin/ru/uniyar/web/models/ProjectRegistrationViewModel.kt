@@ -5,5 +5,6 @@ import ru.uniyar.domain.models.UserModel
 
 class ProjectRegistrationViewModel(
     val users: List<UserModel> = emptyList(),
-    val project: Map<String, Any?> = emptyMap()
+    val project: Map<String, Any?> = emptyMap(),
+    val messages: List<String> = emptyList()
 ) : ViewModel
