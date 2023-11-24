@@ -9,7 +9,6 @@ import org.http4k.lens.long
 import org.http4k.lens.nonEmptyString
 import org.http4k.lens.string
 import org.http4k.lens.webForm
-import org.http4k.routing.path
 import ru.uniyar.dto.Project
 
 class ProjectValidation {

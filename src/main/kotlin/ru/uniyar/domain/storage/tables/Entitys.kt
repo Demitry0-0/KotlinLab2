@@ -1,9 +1,7 @@
 package ru.uniyar.domain.storage.entitys
 
 import org.ktorm.entity.Entity
-import ru.uniyar.domain.models.UserModel
 import java.time.LocalDate
-import kotlin.reflect.KClass
 
 interface UserEntity : Entity<UserEntity> {
     companion object : Entity.Factory<UserEntity>()

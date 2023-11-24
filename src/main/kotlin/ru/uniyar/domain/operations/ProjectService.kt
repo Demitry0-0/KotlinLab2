@@ -1,12 +1,9 @@
 package ru.uniyar.domain.operations
 
-import ru.uniyar.domain.models.ProjectSponsorsModel
 import ru.uniyar.domain.models.projectId
 import ru.uniyar.domain.storage.ProjectManager
 import ru.uniyar.dto.Project
 import ru.uniyar.dto.ProjectSponsors
-import ru.uniyar.web.models.ProjectPageViewModel
-import ru.uniyar.web.models.ProjectsPageViewModel
 import kotlin.math.max
 
 class ProjectService(

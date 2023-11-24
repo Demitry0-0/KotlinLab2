@@ -11,7 +11,6 @@ import org.ktorm.dsl.where
 import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.ProjectSponsorsModel
 import ru.uniyar.domain.models.SponsorModel
-import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.models.projectId
 import ru.uniyar.domain.storage.tables.ProjectTable
 import ru.uniyar.domain.storage.tables.SponsorTable
