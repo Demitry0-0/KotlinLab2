@@ -1,11 +1,9 @@
 package ru.uniyar.domain.storage
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.QueryRowSet
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.from
 import org.ktorm.dsl.insert
-import org.ktorm.dsl.limit
 import org.ktorm.dsl.map
 import org.ktorm.dsl.mapNotNull
 import org.ktorm.dsl.select
@@ -17,13 +15,7 @@ import ru.uniyar.dto.User
 open class UserManager(private val database: Database) : Storage<UserModel>() {
     override fun getAll(): List<UserModel> = database
         .from(UserTable).select(UserTable.columns)
-        .map { row ->
-            UserModel(
-                row[UserTable.id]!!,
-                row[UserTable.firstName]!!,
-                row[UserTable.lastName]!!,
-            )
-        }
+        .map { it.toUserModel() }
 
     fun createUser(user: User) = database
         .insert(UserTable) {
@@ -35,9 +27,3 @@ open class UserManager(private val database: Database) : Storage<UserModel>() {
         .select(UserTable.columns).where(UserTable.id eq id)
         .mapNotNull { it.toUserModel() }.firstOrNull()
 }
-
-fun QueryRowSet.toUserModel() = UserModel(
-    this[UserTable.id]!!,
-    this[UserTable.firstName]!!,
-    this[UserTable.lastName]!!,
-)

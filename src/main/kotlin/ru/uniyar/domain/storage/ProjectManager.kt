@@ -15,8 +15,8 @@ import ru.uniyar.dto.Project
 
 open class ProjectManager(private val database: Database) : Storage<ProjectModel>() {
     override fun getAll(): List<ProjectModel> = database
-        .from(ProjectTable).innerJoin(UserTable, UserTable.id eq ProjectTable.id)
-        .select(ProjectTable.columns)
+        .from(ProjectTable).innerJoin(UserTable, UserTable.id eq ProjectTable.userId)
+        .select(ProjectTable.columns + UserTable.columns)
         .map { row ->
             ProjectModel(
                 row[ProjectTable.id]!!,

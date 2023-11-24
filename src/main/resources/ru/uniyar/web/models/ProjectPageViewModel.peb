@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            {%for sponsor in model.project.sponsors%}
+            {%for sponsor in model.sponsors%}
             <tr>
                 <td>{{ sponsor.first.firstName}} {{ sponsor.first.lastName}}</td>
                 <td>{{ sponsor.second}}</td>
