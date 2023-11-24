@@ -42,6 +42,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/projects">Проекты</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registration/project">добавить проект</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registration/user">добавить пользователя</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -67,9 +73,9 @@
         list="dish"
         required>
 <datalist id="dish">
-        {%for user in users%}
-            <option value="{{ user.id }} {{ user.firstName }} {{ user.lastName}}"
-                    label="{{ user.firstName }} {{ user.lastName}}">
+    {%for user in users%}
+    <option value="{{ user.id }} {{ user.firstName }} {{ user.lastName}}"
+            label="{{ user.firstName }} {{ user.lastName}}">
         {%endfor%}
 </datalist>
 {% endmacro %}
