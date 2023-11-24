@@ -1,5 +1,5 @@
 package ru.uniyar.domain.storage
 
-import ru.uniyar.domain.models.User
+import ru.uniyar.domain.models.UserModel
 
-open class Users : Storage<User>()
+open class Users : Storage<UserModel>()

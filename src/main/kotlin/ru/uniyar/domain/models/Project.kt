@@ -5,11 +5,11 @@ typealias projectId = Int
 
 class Project(
     id: projectId,
-    val user: User,
+    val userModel: UserModel,
     val title: String,
     val description: String,
     val targetFundSize: Long,
-    val sponsors: List<Pair<User, Long>>,
+    val sponsors: List<Pair<UserModel, Long>>,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val createdAt: LocalDateTime = LocalDateTime.now(),

@@ -2,7 +2,7 @@ package ru.uniyar.domain.models
 
 typealias userId = ModelId
 
-class User(
+class UserModel(
     id: userId,
     val firstName: String,
     val lastName: String,

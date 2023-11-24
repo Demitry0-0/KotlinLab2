@@ -12,7 +12,7 @@ import org.http4k.server.asServer
 import org.http4k.template.PebbleTemplates
 import org.http4k.template.TemplateRenderer
 import ru.uniyar.domain.models.Project
-import ru.uniyar.domain.models.User
+import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.storage.Projects
 import ru.uniyar.domain.storage.Users
 import ru.uniyar.web.handlers.GetProjectRegistration
@@ -24,9 +24,9 @@ import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostUserRegistration
 import java.time.LocalDateTime
 
-fun generateProjects(users: List<User>): List<Project> {
+fun generateProjects(userModels: List<UserModel>): List<Project> {
     val listProjects = mutableListOf<Project>()
-    users.first {
+    userModels.first {
         listProjects.add(
             Project(
                 0,
@@ -34,8 +34,8 @@ fun generateProjects(users: List<User>): List<Project> {
                 "На анекдоты",
                 "Хочу завести большую базу анекдотов",
                 1000000,
-                List((1..users.size).random()) {
-                    Pair(users.random(), (1000L..1000000L).random())
+                List((1..userModels.size).random()) {
+                    Pair(userModels.random(), (1000L..1000000L).random())
                 },
                 LocalDateTime.of(2010, 10, 1, 0, 0, 0),
                 LocalDateTime.of(2020, 5, 1, 0, 0, 0),
@@ -43,7 +43,7 @@ fun generateProjects(users: List<User>): List<Project> {
             ),
         )
     }
-    users.last {
+    userModels.last {
         listProjects.add(
             Project(
                 1,
@@ -51,8 +51,8 @@ fun generateProjects(users: List<User>): List<Project> {
                 "На кухню",
                 "Хочу улучшить условия труда",
                 9999999,
-                List((1..users.size).random()) {
-                    Pair(users.random(), (1000L..1000000L).random())
+                List((1..userModels.size).random()) {
+                    Pair(userModels.random(), (1000L..1000000L).random())
                 },
                 LocalDateTime.of(2015, 10, 1, 0, 0, 0),
                 LocalDateTime.of(2017, 5, 1, 0, 0, 0),
@@ -81,16 +81,16 @@ fun getRoutes(
 val users = Users()
 val projects = Projects()
 
-val generatedUsers =
+val generatedUserModels =
     listOf(
-        User(0, "Alex", "Bond"),
-        User(1, "Homa", "Round"),
-        User(2, "Nastya", "Rukastai"),
+        UserModel(0, "Alex", "Bond"),
+        UserModel(1, "Homa", "Round"),
+        UserModel(2, "Nastya", "Rukastai"),
     )
 
 fun main() {
-    users.fill(generatedUsers)
-    projects.fill(generateProjects(generatedUsers))
+    users.fill(generatedUserModels)
+    projects.fill(generateProjects(generatedUserModels))
 
     val renderer = PebbleTemplates().HotReload("./src/main/resources")
     val app: HttpHandler = getRoutes(renderer, projects)
