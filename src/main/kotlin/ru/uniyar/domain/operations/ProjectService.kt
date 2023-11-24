@@ -1,5 +1,6 @@
 package ru.uniyar.domain.operations
 
+import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.projectId
 import ru.uniyar.domain.storage.ProjectManager
 import ru.uniyar.dto.Project
@@ -10,7 +11,8 @@ class ProjectService(
     val projectManager: ProjectManager
 ) {
     fun createProject(project: Project): Int = projectManager.createProject(project)
-
+    fun updateProject(id: projectId, project: Project) = projectManager.updateProject(id, project)
+    fun getProject(id: projectId) = projectManager.getProject(id)
 
     fun getProjectSponsors(id: projectId): ProjectSponsors? {
         val project = projectManager.getProject(id) ?: return null

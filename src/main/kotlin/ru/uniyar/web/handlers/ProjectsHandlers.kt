@@ -11,6 +11,7 @@ import ru.uniyar.Config
 import ru.uniyar.Containers
 import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.operations.UserService
+import ru.uniyar.web.models.ProjectChangedViewModel
 import ru.uniyar.web.models.ProjectPageViewModel
 import ru.uniyar.web.models.ProjectRegistrationViewModel
 import ru.uniyar.web.models.ProjectsPageViewModel
@@ -81,6 +82,69 @@ class PostProjectRegistration(
         )
 
         projectService.createProject(result.value)
+
+        return Response(Status.FOUND).redirect(Config.MAIN_PATH)
+    }
+
+}
+
+class GetProjectUpdate(
+    val renderer: TemplateRenderer = Containers.renderer,
+    val projectService: ProjectService = Containers.projectService,
+    val userService: UserService = Containers.userService
+) : HttpHandler {
+    override fun invoke(request: Request): Response {
+        val projectId = request.path("id")?.toIntOrNull()
+        projectId ?: return Response(Status.BAD_REQUEST)
+        val project = projectService.getProject(projectId) ?: return Response(Status.NOT_FOUND)
+        return Response(Status.OK).body(
+            renderer(
+                ProjectChangedViewModel(
+                    users = userService.getAllUsers(),
+                    project = project
+                )
+            )
+        )
+
+    }
+
+}
+
+class PostProjectUpdate(
+    val renderer: TemplateRenderer = Containers.renderer,
+    val validator: ProjectValidation = Containers.projectValidation,
+    val projectService: ProjectService = Containers.projectService,
+    val userService: UserService = Containers.userService
+) : HttpHandler {
+    override fun invoke(request: Request): Response {
+        println("HELLO")
+        val projectId = request.path("id")?.toIntOrNull()
+        projectId ?: return Response(Status.BAD_REQUEST)
+
+        val project = projectService.getProject(projectId) ?: return Response(Status.NOT_FOUND)
+
+        val result = validator.validate(request)
+        result.value ?: return Response(Status.BAD_REQUEST).body(
+            renderer(
+                ProjectChangedViewModel(
+                    users = userService.getAllUsers(),
+                    project = project,
+                    messages = result.errors
+                )
+            )
+        )
+
+        userService.getUser(result.value.userId) ?: return Response(Status.BAD_REQUEST).body(
+            renderer(
+                ProjectChangedViewModel(
+                    users = userService.getAllUsers(),
+                    project = project,
+                    messages = listOf("User not found")
+                )
+            )
+        )
+
+        projectService.updateProject(projectId, result.value)
 
         return Response(Status.FOUND).redirect(Config.MAIN_PATH)
     }

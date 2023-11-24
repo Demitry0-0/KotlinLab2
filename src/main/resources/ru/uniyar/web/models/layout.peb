@@ -66,13 +66,13 @@
         required>
 {% endmacro %}
 
-{% macro inputListUsersForm(type="text", name, form, users, placeholder="") %}
+{% macro inputListUsersForm(type="text", name, form, users, placeholder="", value="") %}
 <input
         class="form-control"
         type="{{ type }}"
         name="{{ name }}"
         placeholder="{{ placeholder }}"
-        value="{{ form[name]  }}"
+        value="{{ value }}"
         list="dish"
         required>
 <datalist id="dish">

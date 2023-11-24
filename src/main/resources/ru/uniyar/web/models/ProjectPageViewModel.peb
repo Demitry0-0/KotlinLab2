@@ -12,6 +12,7 @@
             <p>Целевой размер фонда: {{ model.project.targetFundSize }} рублей.</p>
             <p>Осталось собрать: {{ model.leftSum }} рублей.</p>
         </div>
+        <a href="/projects/{{ model.project.id }}/update">Изменить</a>
         <p>Спонсоры:</p>
         <table class="table">
             <thead>

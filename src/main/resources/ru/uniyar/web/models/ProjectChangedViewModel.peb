@@ -1,0 +1,71 @@
+{% extends "./layout.peb" %}
+
+{% block content %}
+<form method="POST">
+  <div class="mb-3">
+    <label for="text" class="form-label">Название</label>
+    {{
+        inputForm(
+            name="title",
+            type="text",
+            form=model.project
+        )
+    }}
+  </div>
+    <div class="mb-3">
+          <label for="text" class="form-label">Организатор</label>
+          {% set login = model.project.user.id+ " " +  model.project.user.firstName + " " + model.project.user.lastName %}
+          {{
+              inputListUsersForm(
+                  name="user",
+                  type="text",
+                  form=model.project,
+                  users=model.users,
+                  value=login
+              )
+          }}
+
+       </div>
+
+  <div class="mb-3">
+      <label for="number" class="form-label">Целевая сумма</label>
+      {{
+          inputForm(
+              name="targetFundSize",
+              type="number",
+              form=model.project,
+              min="0"
+          )
+      }}
+    </div>
+
+<div class="mb-3">
+      <label for="date" class="form-label">Начало сбора</label>
+      {{
+          inputForm(
+              name="startDate",
+              type="date",
+              form=model.project
+          )
+      }}
+    </div>
+<div class="mb-3">
+      <label for="date" class="form-label">Конец сбора</label>
+      {{
+          inputForm(
+              name="endDate",
+              type="date",
+              form=model.project
+          )
+      }}
+    </div>
+
+
+  <div class="mb-3">
+      <label for="feedback" class="form-label">Описание</label>
+      <textarea id="feedback" name="description" style="width: 100%; height: 100%;">{{ model.project.description }}</textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Обновить</button>
+</form>
+<p>{{ model.messages | first }}</p>
+{% endblock %}

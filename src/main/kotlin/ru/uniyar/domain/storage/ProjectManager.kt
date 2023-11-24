@@ -7,6 +7,7 @@ import org.ktorm.dsl.innerJoin
 import org.ktorm.dsl.insert
 import org.ktorm.dsl.map
 import org.ktorm.dsl.select
+import org.ktorm.dsl.update
 import org.ktorm.dsl.where
 import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.ProjectSponsorsModel
@@ -31,6 +32,19 @@ open class ProjectManager(private val database: Database) : Storage<ProjectModel
             set(ProjectTable.description, project.description)
             set(ProjectTable.startDate, project.startDate)
             set(ProjectTable.endDate, project.endDate)
+        }
+
+    fun updateProject(id: projectId, project: Project) =
+        database.update(ProjectTable) {
+            set(ProjectTable.userId, project.userId)
+            set(ProjectTable.targetFundSize, project.targetFundSize)
+            set(ProjectTable.title, project.title)
+            set(ProjectTable.description, project.description)
+            set(ProjectTable.startDate, project.startDate)
+            set(ProjectTable.endDate, project.endDate)
+            where {
+                it.id eq id
+            }
         }
 
     fun getProject(id: projectId) = database
