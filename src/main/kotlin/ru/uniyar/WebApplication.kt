@@ -1,5 +1,6 @@
 package ru.uniyar
 
+import org.flywaydb.core.Flyway
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method
 import org.http4k.routing.ResourceLoader
@@ -11,10 +12,14 @@ import org.http4k.server.Netty
 import org.http4k.server.asServer
 import org.http4k.template.PebbleTemplates
 import org.http4k.template.TemplateRenderer
+import org.ktorm.dsl.insert
 import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.storage.Projects
 import ru.uniyar.domain.storage.Users
+import ru.uniyar.domain.storage.tables.ProjectTable
+import ru.uniyar.domain.storage.tables.SponsorTable
+import ru.uniyar.domain.storage.tables.UserTable
 import ru.uniyar.web.handlers.GetProjectRegistration
 import ru.uniyar.web.handlers.HomeHandler
 import ru.uniyar.web.handlers.ProjectByIdHandler
@@ -22,6 +27,7 @@ import ru.uniyar.web.handlers.ProjectsHandler
 import ru.uniyar.web.handlers.GetUserRegistration
 import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostUserRegistration
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 fun generateProjects(userModels: List<UserModel>): List<ProjectModel> {
@@ -78,6 +84,16 @@ fun getRoutes(
         static(ResourceLoader.Classpath("/ru/uniyar/public/")),
     )
 
+fun performMigrations() {
+    val flyway = Flyway
+        .configure()
+        .locations(Config.DB_LOCATION)
+        .validateMigrationNaming(true)
+        .dataSource(Config.JDBC_CONNECTION, Config.DB_USER, Config.DB_PASSWORD)
+        .load()
+    flyway.migrate()
+}
+
 val users = Users()
 val projects = Projects()
 
@@ -88,7 +104,30 @@ val generatedUserModels =
         UserModel(2, "Nastya", "Rukastai"),
     )
 
+fun testInsert(){
+    val database = Containers.database
+    database.insert(UserTable){
+        set(UserTable.deletedAt, null)
+        set(UserTable.firstName, "Hello")
+        set(UserTable.lastName, "World")
+    }
+    database.insert(ProjectTable){
+        set(ProjectTable.endDate, LocalDate.now())
+        set(ProjectTable.startDate, LocalDate.of(2023, 10, 1))
+        set(ProjectTable.description, "descr")
+        set(ProjectTable.userId, 1)
+        set(ProjectTable.title, "title")
+        set(ProjectTable.targetFundSize, 100)
+    }
+    database.insert(SponsorTable){
+        set(SponsorTable.sum, 50)
+        set(SponsorTable.projectId, 1)
+        set(SponsorTable.userId, 1)
+    }
+}
+
 fun main() {
+    performMigrations()
     users.fill(generatedUserModels)
     projects.fill(generateProjects(generatedUserModels))
 
