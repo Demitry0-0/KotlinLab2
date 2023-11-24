@@ -1,5 +1,5 @@
 package ru.uniyar.domain.storage
 
-import ru.uniyar.domain.models.Project
+import ru.uniyar.domain.models.ProjectModel
 
-open class Projects : Storage<Project>()
+open class Projects : Storage<ProjectModel>()

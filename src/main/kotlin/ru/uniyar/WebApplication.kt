@@ -11,7 +11,7 @@ import org.http4k.server.Netty
 import org.http4k.server.asServer
 import org.http4k.template.PebbleTemplates
 import org.http4k.template.TemplateRenderer
-import ru.uniyar.domain.models.Project
+import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.storage.Projects
 import ru.uniyar.domain.storage.Users
@@ -24,11 +24,11 @@ import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostUserRegistration
 import java.time.LocalDateTime
 
-fun generateProjects(userModels: List<UserModel>): List<Project> {
-    val listProjects = mutableListOf<Project>()
+fun generateProjects(userModels: List<UserModel>): List<ProjectModel> {
+    val listProjectModels = mutableListOf<ProjectModel>()
     userModels.first {
-        listProjects.add(
-            Project(
+        listProjectModels.add(
+            ProjectModel(
                 0,
                 it,
                 "На анекдоты",
@@ -44,8 +44,8 @@ fun generateProjects(userModels: List<UserModel>): List<Project> {
         )
     }
     userModels.last {
-        listProjects.add(
-            Project(
+        listProjectModels.add(
+            ProjectModel(
                 1,
                 it,
                 "На кухню",
@@ -60,7 +60,7 @@ fun generateProjects(userModels: List<UserModel>): List<Project> {
             ),
         )
     }
-    return listProjects
+    return listProjectModels
 }
 
 fun getRoutes(

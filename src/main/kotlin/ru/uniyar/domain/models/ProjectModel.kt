@@ -3,7 +3,7 @@ package ru.uniyar.domain.models
 import java.time.LocalDateTime
 typealias projectId = Int
 
-class Project(
+class ProjectModel(
     id: projectId,
     val userModel: UserModel,
     val title: String,

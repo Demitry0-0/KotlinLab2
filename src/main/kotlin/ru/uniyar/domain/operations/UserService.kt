@@ -5,5 +5,6 @@ import ru.uniyar.dto.User
 class UserService {
     fun createUser(user: User) {
         //save
+        println("SAVE $user")
     }
 }
