@@ -21,19 +21,19 @@ class GetUsersHandler(
         return Response(Status.OK).body(renderer(UsersPageViewModel(service.getAllUsers())))
     }
 }
+
 class GetUserRegistration(
-    val renderer: TemplateRenderer = Containers.renderer
+    val renderer: TemplateRenderer = Containers.renderer,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         return Response(Status.OK).body(renderer(UserRegistrationViewModel()))
     }
-
 }
 
 class PostUserRegistration(
     val renderer: TemplateRenderer = Containers.renderer,
     val validator: UserValidation = Containers.userValidation,
-    val service: UserService = Containers.userService
+    val service: UserService = Containers.userService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val result = validator.validate(request)
@@ -41,14 +41,12 @@ class PostUserRegistration(
             renderer(
                 UserRegistrationViewModel(
                     request.formAsMap().mapValues { it.value.first() },
-                    messages = result.errors
-                )
-            )
+                    messages = result.errors,
+                ),
+            ),
         )
         service.createUser(result.value)
 
         return redirect(Config.MAIN_PATH)
     }
-
 }
-

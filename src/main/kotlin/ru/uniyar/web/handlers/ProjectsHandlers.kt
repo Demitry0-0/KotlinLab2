@@ -37,27 +37,25 @@ class GetProjectByIdHandler(
         val projectSponsors = projectService.getProjectSponsors(projectId) ?: return Response(Status.NOT_FOUND)
 
         return Response(Status.OK).body(
-            renderer(ProjectPageViewModel(projectSponsors))
+            renderer(ProjectPageViewModel(projectSponsors)),
         )
     }
 }
 
-
 class GetProjectRegistration(
     val renderer: TemplateRenderer = Containers.renderer,
-    val userService: UserService = Containers.userService
+    val userService: UserService = Containers.userService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         return Response(Status.OK).body(renderer(ProjectRegistrationViewModel(users = userService.getAllUsers())))
     }
-
 }
 
 class PostProjectRegistration(
     val renderer: TemplateRenderer = Containers.renderer,
     val validator: ProjectValidation = Containers.projectValidation,
     val projectService: ProjectService = Containers.projectService,
-    val userService: UserService = Containers.userService
+    val userService: UserService = Containers.userService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val result = validator.validate(request)
@@ -66,9 +64,9 @@ class PostProjectRegistration(
                 ProjectRegistrationViewModel(
                     users = userService.getAllUsers(),
                     project = request.formAsMap().mapValues { it.value.first() },
-                    messages = result.errors
-                )
-            )
+                    messages = result.errors,
+                ),
+            ),
         )
 
         userService.getUser(result.value.userId) ?: return Response(Status.BAD_REQUEST).body(
@@ -76,22 +74,21 @@ class PostProjectRegistration(
                 ProjectRegistrationViewModel(
                     users = userService.getAllUsers(),
                     project = request.formAsMap().mapValues { it.value.first() },
-                    messages = listOf("User not found")
-                )
-            )
+                    messages = listOf("User not found"),
+                ),
+            ),
         )
 
         projectService.createProject(result.value)
 
         return redirect(Config.PROJECTS_PATH)
     }
-
 }
 
 class GetProjectUpdate(
     val renderer: TemplateRenderer = Containers.renderer,
     val projectService: ProjectService = Containers.projectService,
-    val userService: UserService = Containers.userService
+    val userService: UserService = Containers.userService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val projectId = request.path("id")?.toIntOrNull()
@@ -101,20 +98,18 @@ class GetProjectUpdate(
             renderer(
                 ProjectChangedViewModel(
                     users = userService.getAllUsers(),
-                    project = project
-                )
-            )
+                    project = project,
+                ),
+            ),
         )
-
     }
-
 }
 
 class PostProjectUpdate(
     val renderer: TemplateRenderer = Containers.renderer,
     val validator: ProjectValidation = Containers.projectValidation,
     val projectService: ProjectService = Containers.projectService,
-    val userService: UserService = Containers.userService
+    val userService: UserService = Containers.userService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val projectId = request.path("id")?.toIntOrNull()
@@ -128,9 +123,9 @@ class PostProjectUpdate(
                 ProjectChangedViewModel(
                     users = userService.getAllUsers(),
                     project = project,
-                    messages = result.errors
-                )
-            )
+                    messages = result.errors,
+                ),
+            ),
         )
 
         userService.getUser(result.value.userId) ?: return Response(Status.BAD_REQUEST).body(
@@ -138,20 +133,19 @@ class PostProjectUpdate(
                 ProjectChangedViewModel(
                     users = userService.getAllUsers(),
                     project = project,
-                    messages = listOf("User not found")
-                )
-            )
+                    messages = listOf("User not found"),
+                ),
+            ),
         )
 
         projectService.updateProject(projectId, result.value)
 
         return redirect(Config.PROJECTS_PATH)
     }
-
 }
 
 class PostProjectDelete(
-    val projectService: ProjectService = Containers.projectService
+    val projectService: ProjectService = Containers.projectService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val projectId = request.path("id")?.toIntOrNull()
@@ -161,6 +155,4 @@ class PostProjectDelete(
 
         return redirect(Config.PROJECTS_PATH)
     }
-
 }
-

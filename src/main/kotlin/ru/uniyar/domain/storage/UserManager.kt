@@ -13,18 +13,21 @@ import ru.uniyar.domain.models.userId
 import ru.uniyar.domain.storage.tables.UserTable
 import ru.uniyar.dto.User
 
-open class UserManager(private val database: Database) : Storage<UserModel>() {
-    override fun getAll(): List<UserModel> = database
-        .from(UserTable).select(UserTable.columns)
-        .map { it.toUserModel() }
+open class UserManager(private val database: Database) {
+    fun getAll(): List<UserModel> =
+        database
+            .from(UserTable).select(UserTable.columns)
+            .map { it.toUserModel() }
 
-    fun createUser(user: User) = database
-        .insert(UserTable) {
-            set(UserTable.firstName, user.firstName)
-            set(UserTable.lastName, user.lastName)
-        }
+    fun createUser(user: User) =
+        database
+            .insert(UserTable) {
+                set(UserTable.firstName, user.firstName)
+                set(UserTable.lastName, user.lastName)
+            }
 
-    fun getUser(id: userId) = database.from(UserTable)
-        .select(UserTable.columns).where(UserTable.id eq id)
-        .mapNotNull { it.toUserModel() }.firstOrNull()
+    fun getUser(id: userId) =
+        database.from(UserTable)
+            .select(UserTable.columns).where(UserTable.id eq id)
+            .mapNotNull { it.toUserModel() }.firstOrNull()
 }

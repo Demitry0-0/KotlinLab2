@@ -7,5 +7,5 @@ data class ProjectSponsors(
     val project: ProjectModel,
     val sponsors: List<SponsorModel>,
     val leftSum: Long,
-    val totalSum: Long
+    val totalSum: Long,
 )

@@ -7,10 +7,10 @@ import org.ktorm.schema.varchar
 import ru.uniyar.domain.storage.entitys.UserEntity
 
 object UserTable : Table<UserEntity>("USERS") {
-    val id = int("ID").primaryKey().bindTo{it.id}
-    val firstName = varchar("FIRST_NAME").bindTo{it.firstName}
-    val lastName = varchar("LAST_NAME").bindTo{it.lastName}
-    val deletedAt = date("DELETED_AT").bindTo{it.deletedAt}
+    val id = int("ID").primaryKey().bindTo { it.id }
+    val firstName = varchar("FIRST_NAME").bindTo { it.firstName }
+    val lastName = varchar("LAST_NAME").bindTo { it.lastName }
+    val deletedAt = date("DELETED_AT").bindTo { it.deletedAt }
 }
 /*
 CREATE TABLE "users" (

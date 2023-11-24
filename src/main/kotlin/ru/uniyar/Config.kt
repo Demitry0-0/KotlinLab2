@@ -11,6 +11,5 @@ class Config {
         const val DB_DRIVER = "org.sqlite.JDBC"
         const val DB_USER = "sa"
         val DB_PASSWORD = null
-
     }
 }

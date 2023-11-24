@@ -19,24 +19,24 @@ class Containers {
 
         // database
         val dialect = SQLiteDialect()
-        val database = Database.connect(
-            url = JDBC_CONNECTION,
-            driver = DB_DRIVER,
-            user = DB_USER,
-            dialect = dialect,
-        )
+        val database =
+            Database.connect(
+                url = JDBC_CONNECTION,
+                driver = DB_DRIVER,
+                user = DB_USER,
+                dialect = dialect,
+            )
 
         // db manager
         val userManager = UserManager(database)
         val projectManager = ProjectManager(database)
 
-        //validate
+        // validate
         val userValidation = UserValidation()
         val projectValidation = ProjectValidation()
 
-        //service
+        // service
         val userService = UserService(userManager)
         val projectService = ProjectService(projectManager)
-
     }
 }

@@ -8,43 +8,44 @@ import org.http4k.routing.routes
 import org.http4k.routing.static
 import org.http4k.server.Netty
 import org.http4k.server.asServer
-import ru.uniyar.web.handlers.GetProjectRegistration
-import ru.uniyar.web.handlers.GetUserRegistration
-import ru.uniyar.web.handlers.HomeHandler
-import ru.uniyar.web.handlers.PostProjectRegistration
-import ru.uniyar.web.handlers.PostUserRegistration
 import ru.uniyar.web.handlers.GetProjectByIdHandler
+import ru.uniyar.web.handlers.GetProjectRegistration
 import ru.uniyar.web.handlers.GetProjectUpdate
 import ru.uniyar.web.handlers.GetProjectsHandler
+import ru.uniyar.web.handlers.GetUserRegistration
 import ru.uniyar.web.handlers.GetUsersHandler
+import ru.uniyar.web.handlers.HomeHandler
 import ru.uniyar.web.handlers.PostProjectDelete
+import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostProjectUpdate
+import ru.uniyar.web.handlers.PostUserRegistration
 
-val app = routes(
-    "/" bind Method.GET to HomeHandler(),
-    "/users" bind Method.GET to GetUsersHandler(),
-    "/projects" bind Method.GET to GetProjectsHandler(),
-    "/projects/{id}" bind Method.GET to GetProjectByIdHandler(),
-    "/projects/{id}/update" bind Method.GET to GetProjectUpdate(),
-    "/projects/{id}/update" bind Method.POST to PostProjectUpdate(),
-    "/projects/{id}/delete" bind Method.POST to PostProjectDelete(),
-    "/registration/user" bind Method.GET to GetUserRegistration(),
-    "/registration/user" bind Method.POST to PostUserRegistration(),
-    "/registration/project" bind Method.GET to GetProjectRegistration(),
-    "/registration/project" bind Method.POST to PostProjectRegistration(),
-    static(ResourceLoader.Classpath("/ru/uniyar/public/")),
-)
+val app =
+    routes(
+        "/" bind Method.GET to HomeHandler(),
+        "/users" bind Method.GET to GetUsersHandler(),
+        "/projects" bind Method.GET to GetProjectsHandler(),
+        "/projects/{id}" bind Method.GET to GetProjectByIdHandler(),
+        "/projects/{id}/update" bind Method.GET to GetProjectUpdate(),
+        "/projects/{id}/update" bind Method.POST to PostProjectUpdate(),
+        "/projects/{id}/delete" bind Method.POST to PostProjectDelete(),
+        "/registration/user" bind Method.GET to GetUserRegistration(),
+        "/registration/user" bind Method.POST to PostUserRegistration(),
+        "/registration/project" bind Method.GET to GetProjectRegistration(),
+        "/registration/project" bind Method.POST to PostProjectRegistration(),
+        static(ResourceLoader.Classpath("/ru/uniyar/public/")),
+    )
 
 fun performMigrations() {
-    val flyway = Flyway
-        .configure()
-        .locations(Config.DB_LOCATION)
-        .validateMigrationNaming(true)
-        .dataSource(Config.JDBC_CONNECTION, Config.DB_USER, Config.DB_PASSWORD)
-        .load()
+    val flyway =
+        Flyway
+            .configure()
+            .locations(Config.DB_LOCATION)
+            .validateMigrationNaming(true)
+            .dataSource(Config.JDBC_CONNECTION, Config.DB_USER, Config.DB_PASSWORD)
+            .load()
     flyway.migrate()
 }
-
 
 fun main() {
     performMigrations()

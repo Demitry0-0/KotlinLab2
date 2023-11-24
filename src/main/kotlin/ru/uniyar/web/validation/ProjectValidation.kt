@@ -19,18 +19,20 @@ class ProjectValidation {
     val startDateFiled = FormField.localDate().required("startDate")
     val endDateFiled = FormField.localDate().required("endDate")
 
-
     fun validate(request: Request): ResultValidate<Project> {
-        val formLens = Body.webForm(
-            Validator.Feedback, titleField,
-            descriptionFiled,
-            targetFundSizeFiled,
-            startDateFiled,
-            endDateFiled
-        ).toLens()
+        val formLens =
+            Body.webForm(
+                Validator.Feedback,
+                titleField,
+                descriptionFiled,
+                targetFundSizeFiled,
+                startDateFiled,
+                endDateFiled,
+            ).toLens()
         val form = formLens(request)
-        if (form.errors.isNotEmpty())
+        if (form.errors.isNotEmpty()) {
             return ResultValidate(null, form.errors.map { it.toString() })
+        }
 
         val user = userField(form)
         val userId = user.split("\\s+".toRegex()).first().toIntOrNull()

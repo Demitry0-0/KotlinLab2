@@ -11,6 +11,4 @@ class UserService(val manager: UserManager) {
     fun getUser(id: userId) = manager.getUser(id)
 
     fun getAllUsers(): List<UserModel> = manager.getAll()
-
-
 }
