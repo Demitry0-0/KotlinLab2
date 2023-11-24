@@ -83,7 +83,7 @@ class PostProjectRegistration(
 
         projectService.createProject(result.value)
 
-        return redirect(Config.MAIN_PATH)
+        return redirect(Config.PROJECTS_PATH)
     }
 
 }
@@ -145,7 +145,7 @@ class PostProjectUpdate(
 
         projectService.updateProject(projectId, result.value)
 
-        return redirect(Config.MAIN_PATH)
+        return redirect(Config.PROJECTS_PATH)
     }
 
 }
@@ -159,7 +159,7 @@ class PostProjectDelete(
 
         projectService.deleteProject(projectId)
 
-        return redirect(Config.MAIN_PATH)
+        return redirect(Config.PROJECTS_PATH)
     }
 
 }
