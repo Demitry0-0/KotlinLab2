@@ -7,7 +7,6 @@ import org.http4k.lens.Validator
 import org.http4k.lens.nonEmptyString
 import org.http4k.lens.webForm
 import ru.uniyar.dto.User
-import ru.uniyar.web.handlers.isName
 
 class UserValidation {
     val firstNameField = FormField.nonEmptyString().defaulted("firstName", "")
