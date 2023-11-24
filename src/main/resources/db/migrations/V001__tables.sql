@@ -1,5 +1,5 @@
 CREATE TABLE "users" (
-	"id"	INTEGER NOT NULL UNIQUE,
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	"first_name"	TEXT NOT NULL,
 	"last_name"	TEXT NOT NULL,
 	"deleted_at"	datetime  DEFAULT NULL
