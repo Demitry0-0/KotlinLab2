@@ -5,7 +5,6 @@
     <div class="row g-5">
         <div class="col-md-8">
             <p>Проект: {{ model.project.title }}.</p>
-            <p>Добавлен: {{ model.project.createdAt | date("yyyy-MM-dd HH:mm") }}.</p>
             <p>Предприниматель: {{ model.project.user.firstName}} {{ model.project.user.lastName}} .</p>
             <p>Описание: {{ model.project.description }}.</p>
             <p>Дата начала сбора средств: {{ model.project.startDate | date("yyyy-MM-dd") }}.</p>

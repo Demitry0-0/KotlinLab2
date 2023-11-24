@@ -1,6 +1,8 @@
 package ru.uniyar.domain.models
 
+import java.time.LocalDate
 import java.time.LocalDateTime
+
 typealias projectId = Int
 
 class ProjectModel(
@@ -9,8 +11,6 @@ class ProjectModel(
     val title: String,
     val description: String,
     val targetFundSize: Long,
-    val sponsors: List<Pair<UserModel, Long>>,
-    val startDate: LocalDateTime,
-    val endDate: LocalDateTime,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val startDate: LocalDate,
+    val endDate: LocalDate,
 ) : Model(id)

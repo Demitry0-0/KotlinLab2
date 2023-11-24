@@ -15,8 +15,7 @@ import org.http4k.template.TemplateRenderer
 import org.ktorm.dsl.insert
 import ru.uniyar.domain.models.ProjectModel
 import ru.uniyar.domain.models.UserModel
-import ru.uniyar.domain.storage.Projects
-import ru.uniyar.domain.storage.Users
+import ru.uniyar.domain.storage.ProjectManager
 import ru.uniyar.domain.storage.tables.ProjectTable
 import ru.uniyar.domain.storage.tables.SponsorTable
 import ru.uniyar.domain.storage.tables.UserTable
@@ -40,12 +39,11 @@ fun generateProjects(userModels: List<UserModel>): List<ProjectModel> {
                 "На анекдоты",
                 "Хочу завести большую базу анекдотов",
                 1000000,
-                List((1..userModels.size).random()) {
-                    Pair(userModels.random(), (1000L..1000000L).random())
-                },
-                LocalDateTime.of(2010, 10, 1, 0, 0, 0),
-                LocalDateTime.of(2020, 5, 1, 0, 0, 0),
-                LocalDateTime.of(2010, 10, 1, 0, 0, 0),
+//                List((1..userModels.size).random()) {
+//                    Pair(userModels.random(), (1000L..1000000L).random())
+//                },
+                LocalDate.of(2010, 10, 1),
+                LocalDate.of(2020, 5, 1),
             ),
         )
     }
@@ -57,12 +55,11 @@ fun generateProjects(userModels: List<UserModel>): List<ProjectModel> {
                 "На кухню",
                 "Хочу улучшить условия труда",
                 9999999,
-                List((1..userModels.size).random()) {
-                    Pair(userModels.random(), (1000L..1000000L).random())
-                },
-                LocalDateTime.of(2015, 10, 1, 0, 0, 0),
-                LocalDateTime.of(2017, 5, 1, 0, 0, 0),
-                LocalDateTime.of(2015, 10, 1, 0, 0, 0),
+//                List((1..userModels.size).random()) {
+//                    Pair(userModels.random(), (1000L..1000000L).random())
+//                },
+                LocalDate.of(2015, 10, 1),
+                LocalDate.of(2017, 5, 1),
             ),
         )
     }
@@ -70,13 +67,12 @@ fun generateProjects(userModels: List<UserModel>): List<ProjectModel> {
 }
 
 fun getRoutes(
-    renderer: TemplateRenderer,
-    projects: Projects,
+    renderer: TemplateRenderer
 ): RoutingHttpHandler =
     routes(
         "/" bind Method.GET to HomeHandler(renderer),
-        "/projects" bind Method.GET to ProjectsHandler(renderer, projects),
-        "/projects/{id}" bind Method.GET to ProjectByIdHandler(renderer, projects),
+        "/projects" bind Method.GET to ProjectsHandler(renderer),
+        "/projects/{id}" bind Method.GET to ProjectByIdHandler(renderer),
         "/registration/user" bind Method.GET to GetUserRegistration(),
         "/registration/user" bind Method.POST to PostUserRegistration(),
         "/registration/project" bind Method.GET to GetProjectRegistration(),
@@ -94,9 +90,6 @@ fun performMigrations() {
     flyway.migrate()
 }
 
-val users = Users()
-val projects = Projects()
-
 val generatedUserModels =
     listOf(
         UserModel(0, "Alex", "Bond"),
@@ -104,35 +97,11 @@ val generatedUserModels =
         UserModel(2, "Nastya", "Rukastai"),
     )
 
-fun testInsert(){
-    val database = Containers.database
-    database.insert(UserTable){
-        set(UserTable.deletedAt, null)
-        set(UserTable.firstName, "Hello")
-        set(UserTable.lastName, "World")
-    }
-    database.insert(ProjectTable){
-        set(ProjectTable.endDate, LocalDate.now())
-        set(ProjectTable.startDate, LocalDate.of(2023, 10, 1))
-        set(ProjectTable.description, "descr")
-        set(ProjectTable.userId, 1)
-        set(ProjectTable.title, "title")
-        set(ProjectTable.targetFundSize, 100)
-    }
-    database.insert(SponsorTable){
-        set(SponsorTable.sum, 50)
-        set(SponsorTable.projectId, 1)
-        set(SponsorTable.userId, 1)
-    }
-}
 
 fun main() {
     performMigrations()
-    users.fill(generatedUserModels)
-    projects.fill(generateProjects(generatedUserModels))
-
     val renderer = PebbleTemplates().HotReload("./src/main/resources")
-    val app: HttpHandler = getRoutes(renderer, projects)
+    val app: HttpHandler = getRoutes(renderer)
 
     val server = app.asServer(Netty(port = 9000))
     server.start()

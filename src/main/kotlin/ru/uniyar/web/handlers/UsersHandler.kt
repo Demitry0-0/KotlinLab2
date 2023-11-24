@@ -33,7 +33,8 @@ class PostUserRegistration(
             renderer(
                 UserRegistrationViewModel(
                     request.formAsMap().mapValues { it.value.first() },
-                    messages = result.errors)
+                    messages = result.errors
+                )
             )
         )
         service.createUser(result.value)

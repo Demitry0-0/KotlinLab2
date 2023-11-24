@@ -8,20 +8,14 @@ import ru.uniyar.Config.Companion.DB_USER
 import ru.uniyar.Config.Companion.JDBC_CONNECTION
 import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.operations.UserService
+import ru.uniyar.domain.storage.ProjectManager
+import ru.uniyar.domain.storage.UserManager
 import ru.uniyar.web.validation.ProjectValidation
 import ru.uniyar.web.validation.UserValidation
 
 class Containers {
     companion object {
         val renderer = PebbleTemplates().HotReload(Config.BASE_TEMPLATE_DIR_PEBBLE)
-
-        //validate
-        val userValidation = UserValidation()
-        val projectValidation = ProjectValidation()
-
-        //service
-        val userService = UserService()
-        val projectService = ProjectService()
 
         // database
         val dialect = SQLiteDialect()
@@ -31,5 +25,18 @@ class Containers {
             user = DB_USER,
             dialect = dialect,
         )
+
+        // db manager
+        val userManager = UserManager(database)
+        val projectManager = ProjectManager(database)
+
+        //validate
+        val userValidation = UserValidation()
+        val projectValidation = ProjectValidation()
+
+        //service
+        val userService = UserService(userManager)
+        val projectService = ProjectService(projectManager)
+
     }
 }

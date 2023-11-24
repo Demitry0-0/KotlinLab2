@@ -11,41 +11,39 @@ import ru.uniyar.Config
 import ru.uniyar.Containers
 import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.operations.ProjectService
-import ru.uniyar.domain.storage.Projects
-import ru.uniyar.web.models.ProjectPageViewModel
+import ru.uniyar.domain.operations.UserService
 import ru.uniyar.web.models.ProjectRegistrationViewModel
 import ru.uniyar.web.models.ProjectsPageViewModel
 import ru.uniyar.web.validation.ProjectValidation
-import kotlin.math.max
 
 class ProjectsHandler(
     val renderer: TemplateRenderer = Containers.renderer,
-    val projects: Projects,
+    val service: ProjectService = Containers.projectService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
-        return Response(Status.OK).body(renderer(ProjectsPageViewModel(projects.getAll())))
+        return Response(Status.OK).body(renderer(ProjectsPageViewModel(service.getAllProjects())))
     }
 }
 
 class ProjectByIdHandler(
     val renderer: TemplateRenderer = Containers.renderer,
-    val projects: Projects,
+    val service: ProjectService = Containers.projectService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val projectId = request.path("id")?.toIntOrNull()
         projectId ?: return Response(Status.BAD_REQUEST)
-
-        val model =
-            projects.get(projectId)?.let { project ->
-                val totalSum = project.sponsors.sumOf { it.second }
-                ProjectPageViewModel(
-                    project,
-                    max(0, project.targetFundSize - totalSum),
-                    totalSum,
-                )
-            } ?: return Response(Status.NOT_FOUND)
-
-        return Response(Status.OK).body(renderer(model))
+        return Response(Status.NOT_FOUND)
+//        val model =
+//            projects.get(projectId)?.let { project ->
+//                val totalSum = project.sponsors.sumOf { it.second }
+//                ProjectPageViewModel(
+//                    project,
+//                    max(0, project.targetFundSize - totalSum),
+//                    totalSum,
+//                )
+//            } ?: return Response(Status.NOT_FOUND)
+//
+//        return Response(Status.OK).body(renderer(model))
     }
 }
 
@@ -67,19 +65,32 @@ class GetProjectRegistration(
 class PostProjectRegistration(
     val renderer: TemplateRenderer = Containers.renderer,
     val validator: ProjectValidation = Containers.projectValidation,
-    val service: ProjectService = Containers.projectService
+    val projectService: ProjectService = Containers.projectService,
+    val userService: UserService = Containers.userService
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val result = validator.validate(request)
         result.value ?: return Response(Status.BAD_REQUEST).body(
             renderer(
                 ProjectRegistrationViewModel(
-                    users = lst,
+                    users = userService.getAllUsers(),
                     project = request.formAsMap().mapValues { it.value.first() },
-                    messages = result.errors),
+                    messages = result.errors
+                )
             )
         )
-        service.createProject(result.value)
+
+        userService.getUser(result.value.userId) ?: return Response(Status.BAD_REQUEST).body(
+            renderer(
+                ProjectRegistrationViewModel(
+                    users = userService.getAllUsers(),
+                    project = request.formAsMap().mapValues { it.value.first() },
+                    messages = listOf("User not found")
+                )
+            )
+        )
+
+        projectService.createProject(result.value)
 
         return Response(Status.FOUND).redirect(Config.MAIN_PATH)
     }

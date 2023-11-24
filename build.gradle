@@ -55,6 +55,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.34.0'
     implementation group: "org.ktorm", name: "ktorm-core", version: ktormVersion
     implementation group: "org.ktorm", name: "ktorm-support-sqlite", version: ktormVersion
     implementation group: "org.flywaydb", name: "flyway-core", version: flywayVersion

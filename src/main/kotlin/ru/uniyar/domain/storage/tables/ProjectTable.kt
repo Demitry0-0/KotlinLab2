@@ -5,16 +5,17 @@ import org.ktorm.schema.date
 import org.ktorm.schema.int
 import org.ktorm.schema.long
 import org.ktorm.schema.varchar
+import ru.uniyar.domain.storage.entitys.ProjectEntity
 
-object ProjectTable : Table<Nothing>("PROJECTS") {
-    val id = int("ID").primaryKey()
-    val userId = int("USER_ID")
-    val title = varchar("TITLE")
-    val description = varchar("DESCRIPTION")
-    val targetFundSize = long("TARGET_FUND_SIZE")
-    val startDate = date("START_DATE")
-    val endDate = date("END_DATE")
-    val deletedAt = date("DELETED_AT")
+object ProjectTable : Table<ProjectEntity>("PROJECTS") {
+    val id = int("ID").primaryKey().bindTo{it.id}
+    val title = varchar("TITLE").bindTo{it.title}
+    val description = varchar("DESCRIPTION").bindTo{it.description}
+    val targetFundSize = long("TARGET_FUND_SIZE").bindTo{it.targetFundSize}
+    val startDate = date("START_DATE").bindTo{it.startDate}
+    val endDate = date("END_DATE").bindTo{it.endDate}
+    val deletedAt = date("DELETED_AT").bindTo{it.deletedAt}
+    val userId = int("USER_ID").references(UserTable) { it.user }
 }
 /*
 CREATE TABLE "projects" (
