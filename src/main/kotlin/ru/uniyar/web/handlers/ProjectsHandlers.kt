@@ -12,6 +12,7 @@ import ru.uniyar.Containers
 import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.operations.UserService
+import ru.uniyar.web.models.ProjectPageViewModel
 import ru.uniyar.web.models.ProjectRegistrationViewModel
 import ru.uniyar.web.models.ProjectsPageViewModel
 import ru.uniyar.web.validation.ProjectValidation
@@ -27,23 +28,17 @@ class ProjectsHandler(
 
 class ProjectByIdHandler(
     val renderer: TemplateRenderer = Containers.renderer,
-    val service: ProjectService = Containers.projectService,
+    val projectService: ProjectService = Containers.projectService,
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
         val projectId = request.path("id")?.toIntOrNull()
         projectId ?: return Response(Status.BAD_REQUEST)
-        return Response(Status.NOT_FOUND)
-//        val model =
-//            projects.get(projectId)?.let { project ->
-//                val totalSum = project.sponsors.sumOf { it.second }
-//                ProjectPageViewModel(
-//                    project,
-//                    max(0, project.targetFundSize - totalSum),
-//                    totalSum,
-//                )
-//            } ?: return Response(Status.NOT_FOUND)
-//
-//        return Response(Status.OK).body(renderer(model))
+
+        val projectSponsors = projectService.getProjectSponsors(projectId) ?: return Response(Status.NOT_FOUND)
+
+        return Response(Status.OK).body(
+            renderer(ProjectPageViewModel(projectSponsors))
+        )
     }
 }
 

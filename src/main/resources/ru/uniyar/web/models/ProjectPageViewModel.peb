@@ -23,8 +23,8 @@
             <tbody>
             {%for sponsor in model.sponsors%}
             <tr>
-                <td>{{ sponsor.first.firstName}} {{ sponsor.first.lastName}}</td>
-                <td>{{ sponsor.second}}</td>
+                <td>{{ sponsor.user.id}} {{ sponsor.user.firstName}} {{ sponsor.user.lastName}}</td>
+                <td>{{ sponsor.sum}}</td>
             </tr>
             {%endfor%}
             </tbody>
