@@ -17,6 +17,7 @@ import ru.uniyar.web.handlers.GetProjectByIdHandler
 import ru.uniyar.web.handlers.GetProjectUpdate
 import ru.uniyar.web.handlers.GetProjectsHandler
 import ru.uniyar.web.handlers.GetUsersHandler
+import ru.uniyar.web.handlers.PostProjectDelete
 import ru.uniyar.web.handlers.PostProjectUpdate
 
 val app = routes(
@@ -26,6 +27,7 @@ val app = routes(
     "/projects/{id}" bind Method.GET to GetProjectByIdHandler(),
     "/projects/{id}/update" bind Method.GET to GetProjectUpdate(),
     "/projects/{id}/update" bind Method.POST to PostProjectUpdate(),
+    "/projects/{id}/delete" bind Method.POST to PostProjectDelete(),
     "/registration/user" bind Method.GET to GetUserRegistration(),
     "/registration/user" bind Method.POST to PostUserRegistration(),
     "/registration/project" bind Method.GET to GetProjectRegistration(),

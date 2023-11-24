@@ -13,6 +13,9 @@
             <p>Осталось собрать: {{ model.leftSum }} рублей.</p>
         </div>
         <a href="/projects/{{ model.project.id }}/update">Изменить</a>
+        <form action="/projects/{{ model.project.id }}/delete" method="post">
+            <button type="submit" >Удалить</button>
+        </form>
         <p>Спонсоры:</p>
         <table class="table">
             <thead>

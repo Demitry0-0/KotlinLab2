@@ -1,10 +1,12 @@
 package ru.uniyar.domain.storage
 
 import org.ktorm.database.Database
+import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.from
 import org.ktorm.dsl.innerJoin
 import org.ktorm.dsl.insert
+import org.ktorm.dsl.isNull
 import org.ktorm.dsl.map
 import org.ktorm.dsl.select
 import org.ktorm.dsl.update
@@ -17,11 +19,13 @@ import ru.uniyar.domain.storage.tables.ProjectTable
 import ru.uniyar.domain.storage.tables.SponsorTable
 import ru.uniyar.domain.storage.tables.UserTable
 import ru.uniyar.dto.Project
+import java.time.LocalDate
 
 open class ProjectManager(private val database: Database) : Storage<ProjectModel>() {
     override fun getAll(): List<ProjectModel> = database
         .from(ProjectTable).innerJoin(UserTable, UserTable.id eq ProjectTable.userId)
         .select(ProjectTable.columns + UserTable.columns)
+        .where(ProjectTable.deletedAt.isNull())
         .map { it.toProjectModel() }
 
     fun createProject(project: Project) =
@@ -43,14 +47,20 @@ open class ProjectManager(private val database: Database) : Storage<ProjectModel
             set(ProjectTable.startDate, project.startDate)
             set(ProjectTable.endDate, project.endDate)
             where {
-                it.id eq id
+                it.deletedAt.isNull() and (it.id eq id)
             }
+        }
+
+    fun deleteProject(id: projectId) = database
+        .update(ProjectTable) {
+            set(ProjectTable.deletedAt, LocalDate.now())
+            where { ProjectTable.id eq id }
         }
 
     fun getProject(id: projectId) = database
         .from(ProjectTable).innerJoin(UserTable, UserTable.id eq ProjectTable.userId)
         .select(ProjectTable.columns + UserTable.columns)
-        .where(ProjectTable.id eq id)
+        .where(ProjectTable.deletedAt.isNull() and (ProjectTable.id eq id))
         .map { it.toProjectModel() }.firstOrNull()
 
     fun getSponsors(id: projectId) =
@@ -61,13 +71,5 @@ open class ProjectManager(private val database: Database) : Storage<ProjectModel
                 SponsorModel(it.toUserModel(), it[SponsorTable.sum]!!)
             }
 
-    fun getProjectSponsors(id: projectId): ProjectSponsorsModel? {
-        val project = getProject(id) ?: return null
-        val sponsors = getSponsors(id)
-        return ProjectSponsorsModel(
-            project, sponsors
-        )
-    }
-
-
 }
+

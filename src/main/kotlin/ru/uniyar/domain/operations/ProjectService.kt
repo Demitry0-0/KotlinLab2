@@ -14,6 +14,8 @@ class ProjectService(
     fun updateProject(id: projectId, project: Project) = projectManager.updateProject(id, project)
     fun getProject(id: projectId) = projectManager.getProject(id)
 
+    fun deleteProject(id: projectId) = projectManager.deleteProject(id)
+
     fun getProjectSponsors(id: projectId): ProjectSponsors? {
         val project = projectManager.getProject(id) ?: return null
         val sponsors = projectManager.getSponsors(id)

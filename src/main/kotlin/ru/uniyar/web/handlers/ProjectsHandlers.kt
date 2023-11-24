@@ -83,7 +83,7 @@ class PostProjectRegistration(
 
         projectService.createProject(result.value)
 
-        return Response(Status.FOUND).redirect(Config.MAIN_PATH)
+        return redirect(Config.MAIN_PATH)
     }
 
 }
@@ -117,7 +117,6 @@ class PostProjectUpdate(
     val userService: UserService = Containers.userService
 ) : HttpHandler {
     override fun invoke(request: Request): Response {
-        println("HELLO")
         val projectId = request.path("id")?.toIntOrNull()
         projectId ?: return Response(Status.BAD_REQUEST)
 
@@ -146,7 +145,21 @@ class PostProjectUpdate(
 
         projectService.updateProject(projectId, result.value)
 
-        return Response(Status.FOUND).redirect(Config.MAIN_PATH)
+        return redirect(Config.MAIN_PATH)
+    }
+
+}
+
+class PostProjectDelete(
+    val projectService: ProjectService = Containers.projectService
+) : HttpHandler {
+    override fun invoke(request: Request): Response {
+        val projectId = request.path("id")?.toIntOrNull()
+        projectId ?: return Response(Status.BAD_REQUEST)
+
+        projectService.deleteProject(projectId)
+
+        return redirect(Config.MAIN_PATH)
     }
 
 }
