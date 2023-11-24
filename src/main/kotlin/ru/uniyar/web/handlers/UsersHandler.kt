@@ -8,11 +8,21 @@ import org.http4k.core.body.formAsMap
 import org.http4k.template.TemplateRenderer
 import ru.uniyar.Config
 import ru.uniyar.Containers
+import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.operations.UserService
+import ru.uniyar.web.models.ProjectsPageViewModel
 import ru.uniyar.web.models.UserRegistrationViewModel
+import ru.uniyar.web.models.UsersPageViewModel
 import ru.uniyar.web.validation.UserValidation
 
-
+class GetUsersHandler(
+    val renderer: TemplateRenderer = Containers.renderer,
+    val service: UserService = Containers.userService,
+) : HttpHandler {
+    override fun invoke(request: Request): Response {
+        return Response(Status.OK).body(renderer(UsersPageViewModel(service.getAllUsers())))
+    }
+}
 class GetUserRegistration(
     val renderer: TemplateRenderer = Containers.renderer
 ) : HttpHandler {

@@ -13,13 +13,15 @@ import ru.uniyar.web.handlers.GetUserRegistration
 import ru.uniyar.web.handlers.HomeHandler
 import ru.uniyar.web.handlers.PostProjectRegistration
 import ru.uniyar.web.handlers.PostUserRegistration
-import ru.uniyar.web.handlers.ProjectByIdHandler
-import ru.uniyar.web.handlers.ProjectsHandler
+import ru.uniyar.web.handlers.GetProjectByIdHandler
+import ru.uniyar.web.handlers.GetProjectsHandler
+import ru.uniyar.web.handlers.GetUsersHandler
 
 val app = routes(
     "/" bind Method.GET to HomeHandler(),
-    "/projects" bind Method.GET to ProjectsHandler(),
-    "/projects/{id}" bind Method.GET to ProjectByIdHandler(),
+    "/users" bind Method.GET to GetUsersHandler(),
+    "/projects" bind Method.GET to GetProjectsHandler(),
+    "/projects/{id}" bind Method.GET to GetProjectByIdHandler(),
     "/registration/user" bind Method.GET to GetUserRegistration(),
     "/registration/user" bind Method.POST to PostUserRegistration(),
     "/registration/project" bind Method.GET to GetProjectRegistration(),

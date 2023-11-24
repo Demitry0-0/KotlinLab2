@@ -9,7 +9,6 @@ import org.http4k.routing.path
 import org.http4k.template.TemplateRenderer
 import ru.uniyar.Config
 import ru.uniyar.Containers
-import ru.uniyar.domain.models.UserModel
 import ru.uniyar.domain.operations.ProjectService
 import ru.uniyar.domain.operations.UserService
 import ru.uniyar.web.models.ProjectPageViewModel
@@ -17,7 +16,7 @@ import ru.uniyar.web.models.ProjectRegistrationViewModel
 import ru.uniyar.web.models.ProjectsPageViewModel
 import ru.uniyar.web.validation.ProjectValidation
 
-class ProjectsHandler(
+class GetProjectsHandler(
     val renderer: TemplateRenderer = Containers.renderer,
     val service: ProjectService = Containers.projectService,
 ) : HttpHandler {
@@ -26,7 +25,7 @@ class ProjectsHandler(
     }
 }
 
-class ProjectByIdHandler(
+class GetProjectByIdHandler(
     val renderer: TemplateRenderer = Containers.renderer,
     val projectService: ProjectService = Containers.projectService,
 ) : HttpHandler {

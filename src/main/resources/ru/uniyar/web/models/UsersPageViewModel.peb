@@ -1,0 +1,22 @@
+{% extends "./layout.peb" %}
+{% block content %}
+
+<h3>Пользователи</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>номер</th>
+        <th>Пользователь</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%for user in model.users%}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.firstName}} {{ user.lastName}}</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
+
+{%endblock%}
